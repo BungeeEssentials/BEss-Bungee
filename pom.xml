@@ -9,7 +9,8 @@
     <version>1.0</version>
 
     <properties>
-        <env.BUILD_NUMBER>LOCAL_BUILD</env.BUILD_NUMBER>
+        <env.BUILD_NUMBER>LOCAL</env.BUILD_NUMBER>
+        <env.MASTER_BUILD>;</env.MASTER_BUILD>
     </properties>
 
     <build>
