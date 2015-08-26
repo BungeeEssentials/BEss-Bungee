@@ -10,7 +10,6 @@
 
     <properties>
         <env.BUILD_NUMBER>LOCAL</env.BUILD_NUMBER>
-        <env.MASTER_BUILD>;</env.MASTER_BUILD>
     </properties>
 
     <build>
