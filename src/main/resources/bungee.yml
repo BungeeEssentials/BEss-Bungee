@@ -17,7 +17,7 @@ author: 'Cory Redmond'
 description: 'BungeeEssentials(BEss) allows for several amazing features to be added to BungeeCord networks.'
 
 # Maybe I'll steal the plugin from md-5 where we can have both versions..
-version: '${pom.version}-b#${env.BUILD_NUMBER};${env.MASTER_BUILD}'
+version: '${pom.version}-b#${env.BUILD_NUMBER};[[[env.MASTER_BUILD]]]'
 
 # We need protocol lib.
 depend:
