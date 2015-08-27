@@ -34,48 +34,61 @@
  *
  */
 
-package co.ryred.bess.bungee;
+package co.ryred.bess.bungee.player;
 
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-
-import java.util.Scanner;
+import co.ryred.bess.bungee.BEssPlugin;
+import co.ryred.bess.bungee.player.protocol.Protocol;
+import co.ryred.bess.bungee.player.protocol.SaidPacket;
+import de.inventivegames.packetlistener.handler.PacketHandler;
+import de.inventivegames.packetlistener.handler.ReceivedPacket;
+import de.inventivegames.packetlistener.handler.SentPacket;
+import io.netty.buffer.ByteBuf;
+import net.md_5.bungee.protocol.PacketWrapper;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 26/08/2015.
+ *         Created by acech_000 on 27/08/2015.
  */
-public class BEssPlugin extends Plugin
+public class ConnectionManager extends PacketHandler
 {
 
+	private co.ryred.bess.bungee.player.protocol.PacketHandler packetHandler;
+
+	public ConnectionManager( BEssPlugin plugin ) {
+		super( plugin );
+		this.packetHandler = new co.ryred.bess.bungee.player.protocol.PacketHandler();
+	}
+
 	@Override
-	public void onLoad()
+	public void onSend( SentPacket sentPacket )
 	{
 
-		try {
+	}
 
-			// YES I KNOW THIS IS DIRTY. :(
-			// CBA to make a shade resource transformer to replace it.
+	@Override
+	public void onReceive( ReceivedPacket receivedPacket )
+	{
 
-			String build;
+		if( PacketWrapper.class.isAssignableFrom( receivedPacket.getSourcePacket().getClass() ) ) {
+			PacketWrapper pw = (PacketWrapper) receivedPacket.getSourcePacket();
+
+			String name = "[unknown]";
+			if( receivedPacket.getPlayer() != null )
+				name = "["+ receivedPacket.getPlayer().getName() +"]";
+
+			ByteBuf buf = pw.buf.copy();
+
+			final int id = SaidPacket.readVarInt( buf );
+
+			SaidPacket packet = Protocol.GAME.TO_SERVER.createPacket( id );
 			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
+				packet.handle( this.packetHandler );
 			} catch ( Exception e ) {
-				build = ";";
+				e.printStackTrace();
 			}
 
-			PluginDescription pdf = getDescription();
-			pdf.setVersion( pdf.getVersion().replace( "[[[env.MASTER_BUILD]]]", build ) );
-
-		} catch ( Exception e ) {}
+		}
 
 	}
 
-	@Override
-	public void onEnable()
-	{
-
-
-
-	}
 }

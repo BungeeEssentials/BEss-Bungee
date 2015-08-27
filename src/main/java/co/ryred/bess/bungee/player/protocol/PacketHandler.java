@@ -34,48 +34,27 @@
  *
  */
 
-package co.ryred.bess.bungee;
+package co.ryred.bess.bungee.player.protocol;
 
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-
-import java.util.Scanner;
+import co.ryred.bess.bungee.player.protocol.packet.*;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 26/08/2015.
+ *         Created by acech_000 on 27/08/2015.
  */
-public class BEssPlugin extends Plugin
+public class PacketHandler
 {
 
-	@Override
-	public void onLoad()
-	{
+	public void handle(PlayerPosition position) {}
 
-		try {
+	public void handle( PlayerOnGround playerOnGround ) {}
 
-			// YES I KNOW THIS IS DIRTY. :(
-			// CBA to make a shade resource transformer to replace it.
+	public void handle( PlayerLook playerLook ) {}
 
-			String build;
-			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
-			} catch ( Exception e ) {
-				build = ";";
-			}
+	public void handle( PlayerPosLook playerPosLook ) {}
 
-			PluginDescription pdf = getDescription();
-			pdf.setVersion( pdf.getVersion().replace( "[[[env.MASTER_BUILD]]]", build ) );
+	public void handle( HeldItemChange heldItemChange ) {}
 
-		} catch ( Exception e ) {}
+	public void handle( Animation animation ) {}
 
-	}
-
-	@Override
-	public void onEnable()
-	{
-
-
-
-	}
 }

@@ -34,48 +34,54 @@
  *
  */
 
-package co.ryred.bess.bungee;
+package co.ryred.bess.bungee.player.protocol.packet;
 
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-
-import java.util.Scanner;
+import co.ryred.bess.bungee.player.protocol.PacketHandler;
+import co.ryred.bess.bungee.player.protocol.SaidPacket;
+import io.netty.buffer.ByteBuf;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 26/08/2015.
+ *         Created by acech_000 on 27/08/2015.
  */
-public class BEssPlugin extends Plugin
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+public class PlayerPosition extends SaidPacket
 {
 
+	double x;
+	double feetY;
+	double z;
+	boolean onGround;
+
 	@Override
-	public void onLoad()
+	public void read(ByteBuf buf)
 	{
-
-		try {
-
-			// YES I KNOW THIS IS DIRTY. :(
-			// CBA to make a shade resource transformer to replace it.
-
-			String build;
-			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
-			} catch ( Exception e ) {
-				build = ";";
-			}
-
-			PluginDescription pdf = getDescription();
-			pdf.setVersion( pdf.getVersion().replace( "[[[env.MASTER_BUILD]]]", build ) );
-
-		} catch ( Exception e ) {}
-
+		x = buf.readDouble();
+		feetY = buf.readDouble();
+		z = buf.readDouble();
+		onGround = buf.readBoolean();
 	}
 
 	@Override
-	public void onEnable()
+	public void write(ByteBuf buf)
 	{
-
-
-
+		buf.writeDouble( x );
+		buf.writeDouble( feetY );
+		buf.writeDouble( z );
+		buf.writeBoolean( onGround );
 	}
+
+	@Override
+	public void handle( PacketHandler handler ) throws Exception
+	{
+		handler.handle( this );
+	}
+
 }

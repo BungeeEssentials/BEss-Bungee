@@ -34,48 +34,24 @@
  *
  */
 
-package co.ryred.bess.bungee;
+package co.ryred.bess.bungee.player;
 
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-
-import java.util.Scanner;
+import lombok.Getter;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 26/08/2015.
+ *         Created by acech_000 on 27/08/2015.
  */
-public class BEssPlugin extends Plugin
+public class Player
 {
 
-	@Override
-	public void onLoad()
+	@Getter
+	private final ProxiedPlayer handle;
+
+	Player(ProxiedPlayer player)
 	{
-
-		try {
-
-			// YES I KNOW THIS IS DIRTY. :(
-			// CBA to make a shade resource transformer to replace it.
-
-			String build;
-			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
-			} catch ( Exception e ) {
-				build = ";";
-			}
-
-			PluginDescription pdf = getDescription();
-			pdf.setVersion( pdf.getVersion().replace( "[[[env.MASTER_BUILD]]]", build ) );
-
-		} catch ( Exception e ) {}
-
+		this.handle = player;
 	}
 
-	@Override
-	public void onEnable()
-	{
-
-
-
-	}
 }

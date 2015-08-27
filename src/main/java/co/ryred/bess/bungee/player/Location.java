@@ -34,48 +34,12 @@
  *
  */
 
-package co.ryred.bess.bungee;
-
-import net.md_5.bungee.api.plugin.Plugin;
-import net.md_5.bungee.api.plugin.PluginDescription;
-
-import java.util.Scanner;
+package co.ryred.bess.bungee.player;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 26/08/2015.
+ *         Created by acech_000 on 27/08/2015.
  */
-public class BEssPlugin extends Plugin
+public class Location
 {
-
-	@Override
-	public void onLoad()
-	{
-
-		try {
-
-			// YES I KNOW THIS IS DIRTY. :(
-			// CBA to make a shade resource transformer to replace it.
-
-			String build;
-			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
-			} catch ( Exception e ) {
-				build = ";";
-			}
-
-			PluginDescription pdf = getDescription();
-			pdf.setVersion( pdf.getVersion().replace( "[[[env.MASTER_BUILD]]]", build ) );
-
-		} catch ( Exception e ) {}
-
-	}
-
-	@Override
-	public void onEnable()
-	{
-
-
-
-	}
 }
