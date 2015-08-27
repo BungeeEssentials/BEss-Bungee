@@ -59,7 +59,7 @@ public class BEssPlugin extends Plugin
 
 			String build;
 			try {
-				build = new Scanner( BEssPlugin.class.getResourceAsStream( "BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
+				build = new Scanner( BEssPlugin.class.getResourceAsStream( "/BUILD.txt" ), "UTF-8" ).useDelimiter( "\\A" ).next();
 			} catch ( Exception e ) {
 				build = ";";
 			}
