@@ -83,6 +83,8 @@ public class ConnectionManager extends PacketHandler
 				e.printStackTrace();
 			}
 
+			buf = null;
+
 		}
 
 	}
