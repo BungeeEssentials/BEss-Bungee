@@ -34,54 +34,59 @@
  *
  */
 
-package co.ryred.bess.bungee.player.protocol.packet;
+package co.ryred.bess.bungee.player;
 
-import co.ryred.bess.bungee.player.PlayerPacketHandler;
-import co.ryred.bess.bungee.player.protocol.SaidPacket;
-import io.netty.buffer.ByteBuf;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import co.ryred.bess.bungee.events.player.PlayerArmSwingEvent;
+import co.ryred.bess.bungee.events.player.PlayerSwitchItemEvent;
+import co.ryred.bess.bungee.player.protocol.packet.*;
+import co.ryred.bess.util.LogsUtil;
+import lombok.Getter;
+import net.md_5.bungee.api.ProxyServer;
 
 /**
  * @author Cory Redmond
  *         Created by acech_000 on 27/08/2015.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class PlayerPosition extends SaidPacket
+public class PlayerPacketHandler
 {
 
-	double x;
-	double feetY;
-	double z;
-	boolean onGround;
+	@Getter
+	private final Player player;
 
-	@Override
-	public void read(ByteBuf buf)
+	public PlayerPacketHandler( Player player )
 	{
-		x = buf.readDouble();
-		feetY = buf.readDouble();
-		z = buf.readDouble();
-		onGround = buf.readBoolean();
+		this.player = player;
 	}
 
-	@Override
-	public void write(ByteBuf buf)
+	public void handle( PlayerPosition position )
 	{
-		buf.writeDouble( x );
-		buf.writeDouble( feetY );
-		buf.writeDouble( z );
-		buf.writeBoolean( onGround );
+		LogsUtil.info( getPlayer().getName() + " CALLED POSITION." );
 	}
 
-	@Override
-	public void handle( PlayerPacketHandler handler ) throws Exception
+	public void handle( PlayerOnGround playerOnGround )
 	{
-		handler.handle( this );
+		player.setOnGround( playerOnGround.isOnGround() );
+	}
+
+	public void handle( PlayerLook playerLook )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED LOOK." );
+	}
+
+	public void handle( PlayerPosLook playerPosLook )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED POSITIONLOOK." );
+	}
+
+	public void handle( HeldItemChange heldItemChange )
+	{
+		ProxyServer.getInstance().getPluginManager().callEvent( new PlayerSwitchItemEvent( player, heldItemChange.getSlot() ) );
+		this.player.setHeldItemSlot( heldItemChange.getSlot() );
+	}
+
+	public void handle( Animation animation )
+	{
+		ProxyServer.getInstance().getPluginManager().callEvent( new PlayerArmSwingEvent( player ) );
 	}
 
 }
