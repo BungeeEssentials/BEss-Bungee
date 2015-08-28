@@ -36,8 +36,11 @@
 
 package co.ryred.bess.bungee.player;
 
+import co.ryred.bess.bungee.player.protocol.PacketHandler;
 import lombok.Getter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+
+import java.util.UUID;
 
 /**
  * @author Cory Redmond
@@ -49,9 +52,23 @@ public class Player
 	@Getter
 	private final ProxiedPlayer handle;
 
+	@Getter
+	private final PacketHandler connection;
+
 	Player(ProxiedPlayer player)
 	{
 		this.handle = player;
+		this.connection = new PacketHandler( this );
+	}
+
+	public String getName()
+	{
+		return getHandle().getName();
+	}
+
+	public UUID getUniqueId()
+	{
+		return getHandle().getUniqueId();
 	}
 
 }

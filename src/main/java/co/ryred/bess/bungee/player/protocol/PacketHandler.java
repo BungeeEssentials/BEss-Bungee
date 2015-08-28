@@ -36,7 +36,10 @@
 
 package co.ryred.bess.bungee.player.protocol;
 
+import co.ryred.bess.bungee.player.Player;
 import co.ryred.bess.bungee.player.protocol.packet.*;
+import co.ryred.bess.util.LogsUtil;
+import lombok.Getter;
 
 /**
  * @author Cory Redmond
@@ -45,16 +48,42 @@ import co.ryred.bess.bungee.player.protocol.packet.*;
 public class PacketHandler
 {
 
-	public void handle(PlayerPosition position) {}
+	@Getter
+	private final Player player;
 
-	public void handle( PlayerOnGround playerOnGround ) {}
+	public PacketHandler( Player player )
+	{
+		this.player = player;
+	}
 
-	public void handle( PlayerLook playerLook ) {}
+	public void handle( PlayerPosition position )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED POSITION." );
+	}
 
-	public void handle( PlayerPosLook playerPosLook ) {}
+	public void handle( PlayerOnGround playerOnGround )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED ONGROUND." );
+	}
 
-	public void handle( HeldItemChange heldItemChange ) {}
+	public void handle( PlayerLook playerLook )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED LOOK." );
+	}
 
-	public void handle( Animation animation ) {}
+	public void handle( PlayerPosLook playerPosLook )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED POSITIONLOOK." );
+	}
+
+	public void handle( HeldItemChange heldItemChange )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED ITEMCHANGE." );
+	}
+
+	public void handle( Animation animation )
+	{
+		LogsUtil.info( getPlayer().getName() + " CALLED ARM SWING (ANIMATION)." );
+	}
 
 }

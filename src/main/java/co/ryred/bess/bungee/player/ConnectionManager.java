@@ -52,11 +52,8 @@ import net.md_5.bungee.protocol.PacketWrapper;
 public class ConnectionManager extends PacketHandler
 {
 
-	private co.ryred.bess.bungee.player.protocol.PacketHandler packetHandler;
-
 	public ConnectionManager( BEssPlugin plugin ) {
 		super( plugin );
-		this.packetHandler = new co.ryred.bess.bungee.player.protocol.PacketHandler();
 	}
 
 	@Override
@@ -72,17 +69,16 @@ public class ConnectionManager extends PacketHandler
 		if( PacketWrapper.class.isAssignableFrom( receivedPacket.getSourcePacket().getClass() ) ) {
 			PacketWrapper pw = (PacketWrapper) receivedPacket.getSourcePacket();
 
-			String name = "[unknown]";
-			if( receivedPacket.getPlayer() != null )
-				name = "["+ receivedPacket.getPlayer().getName() +"]";
+			if ( receivedPacket.getPlayer() == null ) return;
 
 			ByteBuf buf = pw.buf.copy();
 
 			final int id = SaidPacket.readVarInt( buf );
-
 			SaidPacket packet = Protocol.GAME.TO_SERVER.createPacket( id );
+			packet.read( buf );
+
 			try {
-				packet.handle( this.packetHandler );
+				packet.handle( PlayerManager.get().getPlayer( receivedPacket.getPlayer() ).getConnection() );
 			} catch ( Exception e ) {
 				e.printStackTrace();
 			}
