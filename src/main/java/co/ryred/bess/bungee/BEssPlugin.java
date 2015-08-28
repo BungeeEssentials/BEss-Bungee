@@ -41,12 +41,16 @@ import net.md_5.bungee.api.plugin.PluginDescription;
 
 import java.util.Scanner;
 
+import co.ryred.bess.bungee.player.*;
+
 /**
  * @author Cory Redmond
  *         Created by acech_000 on 26/08/2015.
  */
 public class BEssPlugin extends Plugin
 {
+
+	private PlayerManager playerManager = new PlayerManager( this );
 
 	@Override
 	public void onLoad()
@@ -75,7 +79,7 @@ public class BEssPlugin extends Plugin
 	public void onEnable()
 	{
 
-
+		this.playerManager = new PlayerManager( this );
 
 	}
 }
