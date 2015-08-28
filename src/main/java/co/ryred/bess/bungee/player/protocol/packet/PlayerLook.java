@@ -55,26 +55,24 @@ import lombok.NoArgsConstructor;
 public class PlayerLook extends SaidPacket
 {
 
-	double x;
-	double feetY;
-	double z;
+	float yaw;
+	float pitch;
 	boolean onGround;
 
 	@Override
 	public void read(ByteBuf buf)
 	{
-		x = buf.readDouble();
-		feetY = buf.readDouble();
-		z = buf.readDouble();
+
+		yaw = buf.readFloat();
+		pitch = buf.readFloat();
 		onGround = buf.readBoolean();
 	}
 
 	@Override
 	public void write(ByteBuf buf)
 	{
-		buf.writeDouble( x );
-		buf.writeDouble( feetY );
-		buf.writeDouble( z );
+		buf.writeDouble( yaw );
+		buf.writeDouble( pitch );
 		buf.writeBoolean( onGround );
 	}
 

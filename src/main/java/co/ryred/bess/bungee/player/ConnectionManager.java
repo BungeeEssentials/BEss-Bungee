@@ -81,6 +81,10 @@ public class ConnectionManager extends PacketHandler
 				ByteBuf buf = pw.buf.copy();
 
 				final int id = SaidPacket.readVarInt( buf );
+
+				if( !Protocol.GAME.TO_SERVER.hasPacket( id ) )
+					return;
+
 				SaidPacket packet = Protocol.GAME.TO_SERVER.createPacket( id );
 				LogsUtil._D( "RECEIVED PACKET ID " + id );
 				packet.read( buf );

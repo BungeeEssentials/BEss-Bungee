@@ -38,6 +38,7 @@ package co.ryred.bess.bungee.player.protocol.packet;
 
 import co.ryred.bess.bungee.player.protocol.PacketHandler;
 import co.ryred.bess.bungee.player.protocol.SaidPacket;
+import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,5 +59,11 @@ public class Animation extends SaidPacket
 	{
 		handler.handle( this );
 	}
+
+	@Override
+	public void read(ByteBuf buf) {}
+
+	@Override
+	public void write(ByteBuf buf) {}
 
 }
