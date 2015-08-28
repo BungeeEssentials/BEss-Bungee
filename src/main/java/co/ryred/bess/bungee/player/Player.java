@@ -36,8 +36,9 @@
 
 package co.ryred.bess.bungee.player;
 
-import co.ryred.bess.bungee.player.protocol.PacketHandler;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.UUID;
@@ -53,12 +54,20 @@ public class Player
 	private final ProxiedPlayer handle;
 
 	@Getter
-	private final PacketHandler connection;
+	private final PlayerPacketHandler connection;
+
+	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	private boolean onGround = false;
+
+	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	private short heldItemSlot = 5;
 
 	Player(ProxiedPlayer player)
 	{
 		this.handle = player;
-		this.connection = new PacketHandler( this );
+		this.connection = new PlayerPacketHandler( this );
 	}
 
 	public String getName()

@@ -34,56 +34,30 @@
  *
  */
 
-package co.ryred.bess.bungee.player.protocol;
+package co.ryred.bess.bungee.events.player;
 
 import co.ryred.bess.bungee.player.Player;
-import co.ryred.bess.bungee.player.protocol.packet.*;
-import co.ryred.bess.util.LogsUtil;
 import lombok.Getter;
+import net.md_5.bungee.api.plugin.Event;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 27/08/2015.
+ *         Created by acech_000 on 28/08/2015.
  */
-public class PacketHandler
+public class PlayerSwitchItemEvent extends Event
 {
 
 	@Getter
 	private final Player player;
 
-	public PacketHandler( Player player )
+	@Getter
+	private final short slot;
+
+	public PlayerSwitchItemEvent( Player player, short slot )
 	{
 		this.player = player;
-	}
+		this.slot = slot;
 
-	public void handle( PlayerPosition position )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED POSITION." );
-	}
-
-	public void handle( PlayerOnGround playerOnGround )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED ONGROUND." );
-	}
-
-	public void handle( PlayerLook playerLook )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED LOOK." );
-	}
-
-	public void handle( PlayerPosLook playerPosLook )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED POSITIONLOOK." );
-	}
-
-	public void handle( HeldItemChange heldItemChange )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED ITEMCHANGE." );
-	}
-
-	public void handle( Animation animation )
-	{
-		LogsUtil.info( getPlayer().getName() + " CALLED ARM SWING (ANIMATION)." );
 	}
 
 }

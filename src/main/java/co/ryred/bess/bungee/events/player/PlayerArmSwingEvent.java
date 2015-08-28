@@ -34,54 +34,25 @@
  *
  */
 
-package co.ryred.bess.bungee.player.protocol.packet;
+package co.ryred.bess.bungee.events.player;
 
-import co.ryred.bess.bungee.player.PlayerPacketHandler;
-import co.ryred.bess.bungee.player.protocol.SaidPacket;
-import io.netty.buffer.ByteBuf;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import co.ryred.bess.bungee.player.Player;
+import lombok.Getter;
+import net.md_5.bungee.api.plugin.Event;
 
 /**
  * @author Cory Redmond
- *         Created by acech_000 on 27/08/2015.
+ *         Created by acech_000 on 28/08/2015.
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-public class PlayerPosition extends SaidPacket
+public class PlayerArmSwingEvent extends Event
 {
 
-	double x;
-	double feetY;
-	double z;
-	boolean onGround;
+	@Getter
+	private final Player player;
 
-	@Override
-	public void read(ByteBuf buf)
+	public PlayerArmSwingEvent( Player player )
 	{
-		x = buf.readDouble();
-		feetY = buf.readDouble();
-		z = buf.readDouble();
-		onGround = buf.readBoolean();
-	}
-
-	@Override
-	public void write(ByteBuf buf)
-	{
-		buf.writeDouble( x );
-		buf.writeDouble( feetY );
-		buf.writeDouble( z );
-		buf.writeBoolean( onGround );
-	}
-
-	@Override
-	public void handle( PlayerPacketHandler handler ) throws Exception
-	{
-		handler.handle( this );
+		this.player = player;
 	}
 
 }

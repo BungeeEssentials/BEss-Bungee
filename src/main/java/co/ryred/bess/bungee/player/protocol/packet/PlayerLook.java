@@ -36,7 +36,7 @@
 
 package co.ryred.bess.bungee.player.protocol.packet;
 
-import co.ryred.bess.bungee.player.protocol.PacketHandler;
+import co.ryred.bess.bungee.player.PlayerPacketHandler;
 import co.ryred.bess.bungee.player.protocol.SaidPacket;
 import io.netty.buffer.ByteBuf;
 import lombok.AllArgsConstructor;
@@ -77,7 +77,7 @@ public class PlayerLook extends SaidPacket
 	}
 
 	@Override
-	public void handle( PacketHandler handler ) throws Exception
+	public void handle( PlayerPacketHandler handler ) throws Exception
 	{
 		handler.handle( this );
 	}

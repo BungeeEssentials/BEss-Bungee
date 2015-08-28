@@ -36,6 +36,7 @@
 
 package co.ryred.bess.bungee.player.protocol;
 
+import co.ryred.bess.bungee.player.PlayerPacketHandler;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import io.netty.buffer.ByteBuf;
@@ -247,7 +248,7 @@ public abstract class SaidPacket
 		write( buf );
 	}
 
-	public abstract void handle(PacketHandler handler) throws Exception;
+	public abstract void handle( PlayerPacketHandler handler ) throws Exception;
 
 	@Override
 	public abstract boolean equals(Object obj);
