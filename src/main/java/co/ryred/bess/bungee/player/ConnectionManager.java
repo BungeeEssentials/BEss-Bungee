@@ -39,10 +39,12 @@ package co.ryred.bess.bungee.player;
 import co.ryred.bess.bungee.BEssPlugin;
 import co.ryred.bess.bungee.player.protocol.Protocol;
 import co.ryred.bess.bungee.player.protocol.SaidPacket;
+import co.ryred.bess.util.LogsUtil;
 import de.inventivegames.packetlistener.handler.PacketHandler;
 import de.inventivegames.packetlistener.handler.ReceivedPacket;
 import de.inventivegames.packetlistener.handler.SentPacket;
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
 import net.md_5.bungee.protocol.PacketWrapper;
 
 /**
@@ -52,8 +54,12 @@ import net.md_5.bungee.protocol.PacketWrapper;
 public class ConnectionManager extends PacketHandler
 {
 
+	@Getter
+	private final BEssPlugin plugin;
+
 	public ConnectionManager( BEssPlugin plugin ) {
 		super( plugin );
+		this.plugin = plugin;
 	}
 
 	@Override
@@ -66,25 +72,30 @@ public class ConnectionManager extends PacketHandler
 	public void onReceive( ReceivedPacket receivedPacket )
 	{
 
-		if( PacketWrapper.class.isAssignableFrom( receivedPacket.getSourcePacket().getClass() ) ) {
-			PacketWrapper pw = (PacketWrapper) receivedPacket.getSourcePacket();
+		try {
+			if ( PacketWrapper.class.isAssignableFrom( receivedPacket.getSourcePacket().getClass() ) ) {
+				PacketWrapper pw = (PacketWrapper) receivedPacket.getSourcePacket();
 
-			if ( receivedPacket.getPlayer() == null ) return;
+				if ( receivedPacket.getPlayer() == null ) return;
 
-			ByteBuf buf = pw.buf.copy();
+				ByteBuf buf = pw.buf.copy();
 
-			final int id = SaidPacket.readVarInt( buf );
-			SaidPacket packet = Protocol.GAME.TO_SERVER.createPacket( id );
-			packet.read( buf );
+				final int id = SaidPacket.readVarInt( buf );
+				SaidPacket packet = Protocol.GAME.TO_SERVER.createPacket( id );
+				LogsUtil._D( "RECEIVED PACKET ID " + id );
+				packet.read( buf );
 
-			try {
-				packet.handle( PlayerManager.get().getPlayer( receivedPacket.getPlayer() ).getConnection() );
-			} catch ( Exception e ) {
-				e.printStackTrace();
+				try {
+					packet.handle( PlayerManager.get().getPlayer( receivedPacket.getPlayer() ).getConnection() );
+				} catch ( Exception e ) {
+					e.printStackTrace();
+				}
+
+				buf = null;
+
 			}
-
-			buf = null;
-
+		} catch (Exception e) {
+			if( LogsUtil._D() ) e.printStackTrace();
 		}
 
 	}

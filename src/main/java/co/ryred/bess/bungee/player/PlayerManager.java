@@ -38,6 +38,7 @@ package co.ryred.bess.bungee.player;
 
 import co.ryred.bess.bungee.BEssPlugin;
 import co.ryred.bess.util.LogsUtil;
+import de.inventivegames.packetlistener.handler.PacketHandler;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -54,18 +55,23 @@ import java.util.concurrent.ConcurrentHashMap;
 public class PlayerManager implements Listener
 {
 
-	public static PlayerManager __INSTANCE__;
+	private static PlayerManager __INSTANCE__;
 	private final BEssPlugin plugin;
 	private final ConcurrentHashMap<UUID, Player> uuidMap;
 	private final ConcurrentHashMap<String, Player> nameMap;
+	private final ConnectionManager conManager;
 
-	public PlayerManager( BEssPlugin plugin )
+	PlayerManager( BEssPlugin plugin )
 	{
+
+		if( __INSTANCE__ != null ) throw new IllegalStateException("Already initialised.");
+
 		this.plugin = plugin;
 		this.uuidMap = new ConcurrentHashMap<UUID, Player>();
 		this.nameMap = new ConcurrentHashMap<String, Player>();
 
-		new ConnectionManager( plugin );
+		PacketHandler.addHandler( this.conManager = new ConnectionManager( plugin ) );
+
 		plugin.getProxy().getPluginManager().registerListener( plugin, this );
 
 		LogsUtil._D( "Registered & init'd the PlayerManager" );
@@ -76,13 +82,13 @@ public class PlayerManager implements Listener
 		return __INSTANCE__;
 	}
 
-	public static void initialize( BEssPlugin plugin ) {
+	public static void init( BEssPlugin plugin ) {
 		if( __INSTANCE__ != null ) throw new IllegalStateException("Already initialised.");
 		__INSTANCE__ = new PlayerManager( plugin );
 	}
 
 	@EventHandler( priority = Byte.MAX_VALUE )
-	private void onJoin( PostLoginEvent e ) {
+	public void onJoin( PostLoginEvent e ) {
 
 		Player player = new Player( e.getPlayer() );
 		uuidMap.put( e.getPlayer().getUniqueId(), player );
@@ -91,7 +97,7 @@ public class PlayerManager implements Listener
 	}
 
 	@EventHandler( priority = Byte.MAX_VALUE )
-	private void onJoin( PlayerDisconnectEvent e ) {
+	public void onLeave( PlayerDisconnectEvent e ) {
 
 		uuidMap.remove( e.getPlayer().getUniqueId() );
 		nameMap.remove( e.getPlayer().getName() );

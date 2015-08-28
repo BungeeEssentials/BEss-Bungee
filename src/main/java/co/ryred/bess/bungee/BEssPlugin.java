@@ -36,12 +36,12 @@
 
 package co.ryred.bess.bungee;
 
+import co.ryred.bess.bungee.player.PlayerManager;
+import co.ryred.bess.util.LogsUtil;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.api.plugin.PluginDescription;
 
 import java.util.Scanner;
-
-import co.ryred.bess.bungee.player.*;
 
 /**
  * @author Cory Redmond
@@ -50,11 +50,11 @@ import co.ryred.bess.bungee.player.*;
 public class BEssPlugin extends Plugin
 {
 
-	private PlayerManager playerManager = new PlayerManager( this );
-
 	@Override
 	public void onLoad()
 	{
+
+		LogsUtil.setLogger( getLogger() );
 
 		try {
 
@@ -79,7 +79,7 @@ public class BEssPlugin extends Plugin
 	public void onEnable()
 	{
 
-		this.playerManager = new PlayerManager( this );
+		PlayerManager.init( this );
 
 	}
 }
