@@ -36,15 +36,19 @@
 
 package co.ryred.bess.bungee.player;
 
+import co.ryred.bess.PluginMessagingChannels;
 import co.ryred.bess.bungee.BEssPlugin;
 import co.ryred.bess.util.LogsUtil;
 import de.inventivegames.packetlistener.handler.PacketHandler;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
+import net.md_5.bungee.api.event.PluginMessageEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -101,6 +105,32 @@ public class PlayerManager implements Listener
 
 		uuidMap.remove( e.getPlayer().getUniqueId() );
 		nameMap.remove( e.getPlayer().getName() );
+
+	}
+
+	@EventHandler
+	public void onPluginMessage( PluginMessageEvent e )
+	{
+
+		if ( e.getReceiver() instanceof ProxiedPlayer ) {
+
+			ProxiedPlayer proxiedPlayer = (ProxiedPlayer) e.getSender();
+			Player player = getPlayer( proxiedPlayer );
+
+			if ( PluginMessagingChannels.getFromString( e.getTag() ) == PluginMessagingChannels.WORLD_RELAY_CHANNEL ) {
+
+				try {
+
+					DataInputStream dis = new DataInputStream( new ByteArrayInputStream( e.getData() ) );
+					String worldName = dis.readUTF();
+
+					player.setWorld( worldName );
+
+				} catch ( Exception ex ) {}
+
+			}
+
+		}
 
 	}
 

@@ -64,6 +64,13 @@ public class Player
 	@Setter(AccessLevel.PACKAGE)
 	private short heldItemSlot = 5;
 
+	@Getter
+	@Setter(AccessLevel.PACKAGE)
+	private Location location = null;
+
+	@Getter
+	private String world = null;
+
 	Player(ProxiedPlayer player)
 	{
 		this.handle = player;
@@ -78,6 +85,18 @@ public class Player
 	public UUID getUniqueId()
 	{
 		return getHandle().getUniqueId();
+	}
+
+	public void setWorld( String worldName )
+	{
+
+		this.world = worldName;
+
+		Location loc = getLocation();
+		if ( loc == null ) loc = new Location( null, 0, 0, 0 ).zero();
+		loc.setWorld( worldName );
+		setLocation( loc );
+
 	}
 
 }

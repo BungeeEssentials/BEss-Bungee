@@ -39,7 +39,6 @@ package co.ryred.bess.bungee.player;
 import co.ryred.bess.bungee.events.player.PlayerArmSwingEvent;
 import co.ryred.bess.bungee.events.player.PlayerSwitchItemEvent;
 import co.ryred.bess.bungee.player.protocol.packet.*;
-import co.ryred.bess.util.LogsUtil;
 import lombok.Getter;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -60,7 +59,8 @@ public class PlayerPacketHandler
 
 	public void handle( PlayerPosition position )
 	{
-		LogsUtil.info( getPlayer().getName() + " CALLED POSITION." );
+		player.setOnGround( position.isOnGround() );
+		// TODO
 	}
 
 	public void handle( PlayerOnGround playerOnGround )
@@ -70,12 +70,14 @@ public class PlayerPacketHandler
 
 	public void handle( PlayerLook playerLook )
 	{
-		LogsUtil.info( getPlayer().getName() + " CALLED LOOK." );
+		player.setOnGround( playerLook.isOnGround() );
+		//TODO
 	}
 
 	public void handle( PlayerPosLook playerPosLook )
 	{
-		LogsUtil.info( getPlayer().getName() + " CALLED POSITIONLOOK." );
+		player.setOnGround( playerPosLook.isOnGround() );
+		//TODO
 	}
 
 	public void handle( HeldItemChange heldItemChange )
